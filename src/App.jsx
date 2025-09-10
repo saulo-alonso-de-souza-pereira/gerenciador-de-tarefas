@@ -51,7 +51,7 @@ export const App = () => {
       <Router>
         <GlobalModalStyle />
         <Header /> 
-        <div style={{ marginTop: '-20px' }}> </div>
+        <div style={{ marginTop: '-21px' }}> </div>
         <Routes>
           <Route path="/" element={!user ? <Login  /> : <Navigate to={userRole === 'admin' ? '/admin' : '/user'} />} />
           <Route path="/register" element={!user ? <Register /> : <Navigate to={userRole === 'admin' ? '/admin' : '/user'} />} />
