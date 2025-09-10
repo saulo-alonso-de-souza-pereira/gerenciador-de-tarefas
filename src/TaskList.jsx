@@ -24,7 +24,7 @@ import { Button, Title} from './LoginStyles';
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
-  const { userRole } = useSelector((state) => state.auth);
+  const { userRole, user } = useSelector((state) => state.auth);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState(null);
@@ -84,17 +84,19 @@ const TaskList = () => {
                 <TaskText><FontAwesomeIcon icon={faUser} /> {task.responsavel}</TaskText>
                 <TaskText><FontAwesomeIcon icon={faClock} /> {task.tempoDeExecucao}</TaskText>
               </CardContent>
-
-              {userRole === 'admin' && (
+              
                 <TaskActions>
+                {(userRole === 'admin' || task.uid === user.uid) && (
                   <ActionButton onClick={() => handleEditTask(task)}>
                     <FontAwesomeIcon icon={faPenToSquare} />
                   </ActionButton>
+              )}
+              {userRole === 'admin' && (
                   <ActionButton onClick={() => handleDeleteTask(task.id)}>
                     <FontAwesomeIcon icon={faTrash} />
                   </ActionButton>
-                </TaskActions>
               )}
+                </TaskActions>
             </TaskCard>
           ))}
         </TaskGrid>

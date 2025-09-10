@@ -49,8 +49,8 @@ const TaskForm = ({ taskToEdit, onFormSubmit }) => {
 
   const handleUpdateTask = async (e) => {
     e.preventDefault();
-    if (userRole !== 'admin') {
-      alert("Apenas administradores podem editar tarefas.");
+    if (userRole !== 'admin' && taskToEdit.uid !== user.uid) {
+      alert("Você não tem permissão para editar esta tarefa.");
       return;
     }
     try {
@@ -93,7 +93,9 @@ const TaskForm = ({ taskToEdit, onFormSubmit }) => {
           required
         />
         {taskToEdit ? (
-          userRole === 'admin' && <Button type="submit">Salvar Edição</Button>
+          userRole === 'admin' || taskToEdit.uid === user.uid ? (
+            <Button type="submit">Salvar Edição</Button>
+          ) : null
         ) : (
           <Button type="submit">Adicionar Tarefa</Button>
         )}
