@@ -10,7 +10,7 @@ export const StyledModal = styled(Modal)`
   margin-right: -50%;
   transform: translate(-50%, -50%);
   background: #fff !important;;
-  color: #054375;
+  color: #750543;
   padding: 2rem;
   border-radius: 8px;
   max-width: 500px;
@@ -22,7 +22,7 @@ export const CloseButton = styled.button`
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: #054375;
+  background-color: #750543;
   border: none;
   border-radius: 4px;
   font-size: 1.5rem;
@@ -36,6 +36,6 @@ export const CloseButton = styled.button`
 
 export const GlobalModalStyle = createGlobalStyle`
   .ReactModal__Overlay {
-     background-color: rgba(5, 67, 117, 0.8) !important;
+     background-color: rgba(117, 5, 67, 0.75) !important;
   }
 `;

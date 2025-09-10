@@ -35,7 +35,7 @@ export const CardGradientBorder = styled.div`
   left: 0;
   height: 100%;
   width: 8px; /* Largura do gradiente lateral */
-  background-image: linear-gradient(to bottom, #00d084, #0693e3);
+  background-image: linear-gradient(to bottom, #d0d000, #e30693);
 `;
 
 export const CardContent = styled.div`

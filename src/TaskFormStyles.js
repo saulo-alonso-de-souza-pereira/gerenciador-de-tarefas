@@ -8,7 +8,7 @@ export const TaskContainer = styled.div`
 
 export const Title = styled.h1`
   font-size: 2rem;
-  color: #054375;
+  color: #750543;
   margin-bottom: 1.5rem;
 `;
 
@@ -27,14 +27,14 @@ export const Input = styled.input`
 
   &:focus {
     outline: none;
-    border-color: #8cd133;
-    box-shadow: 0 0 5px rgba(140, 209, 51, 0.25);
+    border-color: #e30693;
+    box-shadow: 0 0 5px rgba(209, 51, 143, 0.25);
   }
 `;
 
 export const Button = styled.button`
   padding: 0.75rem;
-  background-image: linear-gradient(to right, #00d084 0%, #0693e3 100%); 
+  background-image: linear-gradient(to right, #750543 0%, #e30693 100%); 
   color: white;
   font-weight: 600;
   border: none;
@@ -46,7 +46,7 @@ export const Button = styled.button`
 
   &:hover {
     background-position: right center;
-    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2); 
+    box-shadow: 0 4px 8px rgba(209, 51, 143, 0.25); 
   }
 
   &:active {
