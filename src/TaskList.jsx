@@ -81,22 +81,23 @@ const TaskList = () => {
               <CardGradientBorder /> 
               <CardContent>
                 <TaskTitle>{task.tarefa}</TaskTitle>
-                <TaskText><FontAwesomeIcon icon={faUser} /> {task.responsavel}</TaskText>
-                <TaskText><FontAwesomeIcon icon={faClock} /> {task.tempoDeExecucao}</TaskText>
+                <TaskText><em>{task.status}</em></TaskText>
+                <TaskText><FontAwesomeIcon icon={faUser}/>{task.responsavel}</TaskText>
+                <TaskText><FontAwesomeIcon icon={faClock}/>{task.tempoDeExecucao}h / {task.tempoEstimado}h</TaskText>
               </CardContent>
               
-                <TaskActions>
+              <TaskActions>
                 {(userRole === 'admin' || task.uid === user.uid) && (
                   <ActionButton onClick={() => handleEditTask(task)}>
                     <FontAwesomeIcon icon={faPenToSquare} />
                   </ActionButton>
-              )}
-              {userRole === 'admin' && (
-                  <ActionButton onClick={() => handleDeleteTask(task.id)}>
-                    <FontAwesomeIcon icon={faTrash} />
-                  </ActionButton>
-              )}
-                </TaskActions>
+                )}
+                {userRole === 'admin' && (
+                    <ActionButton onClick={() => handleDeleteTask(task.id)}>
+                      <FontAwesomeIcon icon={faTrash} />
+                    </ActionButton>
+                )}
+              </TaskActions>
             </TaskCard>
           ))}
         </TaskGrid>

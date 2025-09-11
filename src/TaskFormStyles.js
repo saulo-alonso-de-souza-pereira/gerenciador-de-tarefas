@@ -12,6 +12,13 @@ export const Title = styled.h1`
   margin-bottom: 1.5rem;
 `;
 
+export const Label = styled.label`
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #e30693;
+`;
+
 export const TaskFormStyled = styled.form`
   display: flex;
   flex-direction: column;
@@ -24,6 +31,25 @@ export const Input = styled.input`
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 1rem;
+
+  &:focus {
+    outline: none;
+    border-color: #e30693;
+    box-shadow: 0 0 5px rgba(209, 51, 143, 0.25);
+  }
+`;
+
+export const Select = styled.select`
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 
   &:focus {
     outline: none;

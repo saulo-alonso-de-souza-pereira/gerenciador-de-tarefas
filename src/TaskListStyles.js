@@ -56,6 +56,11 @@ export const TaskText = styled.p`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
+  em {
+    font-style: italic !important;
+    color:#e30693;
+  }
 `;
 
 export const TaskActions = styled.div`
