@@ -5,6 +5,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import {auth} from "./firebaseConfig";
 import { setAuthStatus, setAuthError, setLoading } from "./redux/authSlice";
 import { GlobalModalStyle } from "./ModalStyles";
+import { Toaster } from "react-hot-toast";
 
 import {Login} from "./Login";
 import AdminDashboard from "./AdminDashboard";
@@ -69,6 +70,11 @@ export const App = () => {
           />
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
+        <Toaster 
+          position="top-center" 
+          reverseOrder={false}
+          toastOptions={{ duration: 15000 }}
+        />
       </Router>
     );
   }

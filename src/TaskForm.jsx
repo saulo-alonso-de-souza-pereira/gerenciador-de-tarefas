@@ -3,6 +3,8 @@ import { db } from './firebaseConfig';
 import { collection, addDoc, updateDoc, doc } from 'firebase/firestore';
 import { useSelector } from 'react-redux';
 import { TaskContainer, Title, TaskFormStyled, Input, Button, Label, Select } from "./TaskFormStyles";
+import { status as statusFreezer } from './shared/status';
+import toast from 'react-hot-toast';
 
 
 const TaskForm = ({ taskToEdit, onFormSubmit }) => {
@@ -10,9 +12,10 @@ const TaskForm = ({ taskToEdit, onFormSubmit }) => {
   
 
   const [tarefa, setTarefa] = useState('');
+  const [descricaoDaTarefa, setDescricaoDaTarefa] = useState('');
   const [tempoDeExecucao, setTempoDeExecucao] = useState(0);
   const [tempoEstimado, setTempoEstimado] = useState(0);
-  const [status, setStatus] = useState('PENDENTE'); 
+  const [status, setStatus] = useState(statusFreezer.PENDENTE);
 
 
   useEffect(() => {
@@ -21,18 +24,20 @@ const TaskForm = ({ taskToEdit, onFormSubmit }) => {
       setTempoDeExecucao(taskToEdit.tempoDeExecucao);
       setTempoEstimado(taskToEdit.tempoEstimado);
       setStatus(taskToEdit.status);
+      setDescricaoDaTarefa(taskToEdit.descricaoDaTarefa);
     } else {
       setTarefa('');
       setTempoDeExecucao(0);
       setTempoEstimado(0);
       setStatus('PENDENTE');
+      setDescricaoDaTarefa('');
     }
   }, [taskToEdit]);
 
   const handleAddTask = async (e) => {
     e.preventDefault();
     if (!user) {
-      alert("Você precisa estar logado para adicionar uma tarefa.");
+      toast.error("Você precisa estar logado para adicionar uma tarefa.");
       return;
     }
     try {
@@ -40,14 +45,16 @@ const TaskForm = ({ taskToEdit, onFormSubmit }) => {
         tarefa,
         responsavel: user.displayName || "admin",
         tempoDeExecucao,
+        descricaoDaTarefa,
         tempoEstimado,
         status,
         createdAt: new Date(),
         uid: user.uid
       });
-      alert('Tarefa adicionada com sucesso!');
+      toast.success('Tarefa adicionada com sucesso!');
       onFormSubmit();
     } catch (e) {
+      toast.error("Erro ao adicionar tarefa.");
       console.error("Erro ao adicionar documento: ", e);
     }
   };
@@ -55,7 +62,7 @@ const TaskForm = ({ taskToEdit, onFormSubmit }) => {
   const handleUpdateTask = async (e) => {
     e.preventDefault();
     if (userRole !== 'admin' && taskToEdit.uid !== user.uid) {
-      alert("Você não tem permissão para editar esta tarefa.");
+      toast.error("Você não tem permissão para editar esta tarefa.");
       return;
     }
     try {
@@ -64,11 +71,13 @@ const TaskForm = ({ taskToEdit, onFormSubmit }) => {
         tarefa,
         tempoDeExecucao,
         tempoEstimado,
+        descricaoDaTarefa,
         status,
       });
-      alert('Tarefa atualizada com sucesso!');
+      toast.success('Tarefa atualizada com sucesso!');
       onFormSubmit();
     } catch (e) {
+      toast.error("Erro ao atualizar a tarefa.");
       console.error("Erro ao atualizar documento: ", e);
     }
   };
@@ -79,12 +88,23 @@ const TaskForm = ({ taskToEdit, onFormSubmit }) => {
       <TaskFormStyled onSubmit={taskToEdit ? handleUpdateTask : handleAddTask}>
         { !taskToEdit || (userRole === 'admin') ? (
           <>
-            <Label>Descrição da tarefa</Label>
+            <Label>Nome da tarefa</Label>
               <Input
-                as="textarea"
+                type='text'
                 value={tarefa}
                 onChange={(e) => setTarefa(e.target.value)}
                 placeholder="Tarefa"
+                maxLength={50}
+                required
+              />
+            <Label>Descrição da Tarefa</Label>
+              <Input
+                as="textarea"
+                value={descricaoDaTarefa}
+                onChange={(e) => setDescricaoDaTarefa(e.target.value)}
+                placeholder="Descrição da Tarefa"
+                rows={4}
+                maxLength={260}
                 required
               />
           </>
@@ -97,6 +117,7 @@ const TaskForm = ({ taskToEdit, onFormSubmit }) => {
               value={tempoDeExecucao}
               onChange={(e) => setTempoDeExecucao(e.target.value)}
               placeholder="horas"
+              maxLength={2}
               required
             />
             <Label>Status:</Label>
@@ -104,9 +125,11 @@ const TaskForm = ({ taskToEdit, onFormSubmit }) => {
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
-              <option value="PENDENTE">Pendente</option>
-              <option value="EM_EXECUCAO">Em execução</option>
-              <option value="CONCLUIDA">Concluída</option>
+              {Object.keys(statusFreezer).map((key) => (
+                <option key={key} value={key}>
+                  {statusFreezer[key]}
+                </option>
+              ))}
             </Select>
           </>
         ) : (
@@ -120,6 +143,7 @@ const TaskForm = ({ taskToEdit, onFormSubmit }) => {
               value={tempoEstimado}
               onChange={(e) => setTempoEstimado(e.target.value)}
               placeholder="horas"
+              maxLength={2}
               required
             />
           </>

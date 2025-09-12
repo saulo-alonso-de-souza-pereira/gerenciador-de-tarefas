@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "./firebaseConfig";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { LoginContainer, Title, LoginForm, Input, Button, CenterContainer } from "./LoginStyles";
+import toast from 'react-hot-toast';
 
 export const Register = () => {
     const [email, setEmail] = useState("");
@@ -18,10 +19,11 @@ export const Register = () => {
             await updateProfile(userCredential.user, {
                 displayName: displayName,
             });
-            alert('Cadastro realizado com sucesso!');
+            toast.success('Cadastro realizado com sucesso!');
             navigate("/");
         } catch (error) {
             console.error("Error registering user:", error.message);
+            toast.error("Erro ao realizar cadastro: " + error.message);
         }
     };
 
@@ -34,6 +36,7 @@ export const Register = () => {
                         <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
                     <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Senha" required />
                     <Button type="submit">Cadastrar</Button>
+                    <p>Já possui uma conta? <a href="/">Faça login</a></p>
                 </LoginForm>
             </LoginContainer>
         </CenterContainer>

@@ -1,14 +1,16 @@
 import React from "react";
 import { auth } from "./firebaseConfig";
 import { sendEmailVerification } from "firebase/auth";
+import toast from 'react-hot-toast';
 
 export const UnverifiedMessage = () => {
     const handleResend = async () => {
         try {
             await sendEmailVerification(auth.currentUser);
-            alert("Email de verificação reenviado!");
+            toast.success("Email de verificação reenviado!");
         } catch (error) {
             console.error("Erro ao reenviar email de verificação:", error);
+            toast.error("Erro ao reenviar email de verificação: " + error.message);
         }
     };
 

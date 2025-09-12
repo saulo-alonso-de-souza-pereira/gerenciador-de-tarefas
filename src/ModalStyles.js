@@ -22,15 +22,20 @@ export const CloseButton = styled.button`
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: #750543;
+  background-image: linear-gradient(to right, #666 0%, #333 100%); 
   border: none;
   border-radius: 4px;
   font-size: 1.5rem;
   cursor: pointer;
   color: #fff;
 
-   &:hover {
-    background-color: #007bff;
+  &:hover {
+    background-position: right center;
+    box-shadow: 0 4px 8px rgba(209, 143, 51, 0.25); 
+  }
+
+  &:active {
+    transform: translateY(1px); 
   }
 `;
 

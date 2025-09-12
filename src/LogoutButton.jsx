@@ -4,6 +4,8 @@ import { auth } from "./firebaseConfig";
 import { useDispatch } from "react-redux";
 import { logout, setAuthError} from "./redux/authSlice";
 import { LogoutButtonStyle } from "./LoginStyles";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
+import { faUserSlash } from '@fortawesome/free-solid-svg-icons';
 
 const LogoutButton = () => {
     const dispatch = useDispatch();
@@ -17,7 +19,9 @@ const LogoutButton = () => {
         }
     }
     return(
-        <LogoutButtonStyle onClick={handleLogout}>Logout</LogoutButtonStyle>
+        <LogoutButtonStyle onClick={handleLogout}>
+            <FontAwesomeIcon icon={faUserSlash} /> Logout
+        </LogoutButtonStyle>
     )
 }
 

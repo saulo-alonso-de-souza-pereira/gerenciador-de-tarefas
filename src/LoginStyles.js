@@ -65,7 +65,7 @@ export const Button = styled.button`
 export const LogoutButtonStyle = styled.button`
   margin-left: 1rem;
   padding: 0.75rem;
-  background-color:  #750543;
+  background-image: linear-gradient(to right, #666 0%, #333 100%); 
   color: white;
   border: none;
   border-radius: 4px;
@@ -74,6 +74,11 @@ export const LogoutButtonStyle = styled.button`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #e30693;
+    background-position: right center;
+    box-shadow: 0 4px 8px rgba(209, 143, 51, 0.25); 
+  }
+
+  &:active {
+    transform: translateY(1px); 
   }
 `;

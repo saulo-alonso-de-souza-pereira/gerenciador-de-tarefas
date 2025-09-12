@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { loginUser} from "./firebaseConfig";
 import { setAuthError } from "./redux/authSlice";
 import { LoginContainer, Title, LoginForm, Input, Button, CenterContainer } from "./LoginStyles";
+import toast from 'react-hot-toast';
 
 export const Login = () => {
     const dispatch = useDispatch();
@@ -17,6 +18,7 @@ export const Login = () => {
             await loginUser(email, password);
         } catch (error) {
             dispatch(setAuthError(error.message));
+            toast.error("Erro ao fazer login: " + error.message);
         }
     };
 

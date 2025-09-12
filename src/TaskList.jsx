@@ -3,9 +3,13 @@ import { db } from './firebaseConfig';
 import { collection, onSnapshot, query, orderBy, deleteDoc, doc } from 'firebase/firestore';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faPenToSquare, faUser, faClock } from '@fortawesome/free-solid-svg-icons'; // Importe os ícones adicionais
+import { faTrash, faPenToSquare, faUser, faClock, faEye } from '@fortawesome/free-solid-svg-icons';
+import {status} from './shared/status';
+import toast from 'react-hot-toast';
 
+import TaskView from './TaskView';
 import TaskForm from './TaskForm';
+import ConfirmTaskDelete from './ConfirmTaskDelete';
 import CustomModal from './CustomModal';
 
 import {
@@ -18,6 +22,7 @@ import {
   TaskText,
   TaskActions,
   ActionButton,
+  StyledIcon,
 } from './TaskListStyles';
 
 import { Button, Title} from './LoginStyles';
@@ -27,7 +32,11 @@ const TaskList = () => {
   const { userRole, user } = useSelector((state) => state.auth);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState(null);
+  const [taskToView, setTaskToView] = useState(null);
+  const [taskIdToDelete, setTaskIdToDelete] = useState(null);
 
   useEffect(() => {
     const q = query(collection(db, 'tarefas'), orderBy('createdAt', 'desc'));
@@ -56,16 +65,34 @@ const TaskList = () => {
     setTaskToEdit(null);
   };
 
-  const handleDeleteTask = async (taskId) => {
+  const handleViewTask = (task) => {
+    setTaskToView(task);
+    setIsViewModalOpen(true);
+  }
+
+  const handleDeleteTaskConfirm = (taskId) => {
+    setTaskIdToDelete(taskId);
+    setIsDeleteModalOpen(true);
+  }
+
+  const handleCancelDelete = () => {
+    setTaskIdToDelete(null);
+    setIsDeleteModalOpen(false);
+  }
+
+  const handleDelete = async () => {
+    
+    setIsDeleteModalOpen(false);
+    if (!taskIdToDelete) return;
+
     try {
-      if (userRole === 'admin') {
-        await deleteDoc(doc(db, "tarefas", taskId));
-        alert("Tarefa excluída com sucesso!");
-      } else {
-        alert("Apenas administradores podem excluir tarefas.");
-      }
+      await deleteDoc(doc(db, "tarefas", taskIdToDelete));
+      toast.success("Tarefa excluída com sucesso!");
     } catch (e) {
       console.error("Erro ao excluir documento: ", e);
+      toast.error("Erro: Você não tem permissão para excluir esta tarefa.");
+    } finally {
+      setTaskIdToDelete(null);
     }
   };
 
@@ -80,20 +107,23 @@ const TaskList = () => {
             <TaskCard key={task.id}> 
               <CardGradientBorder /> 
               <CardContent>
+                <TaskText><em>{status[task.status]}</em></TaskText>
                 <TaskTitle>{task.tarefa}</TaskTitle>
-                <TaskText><em>{task.status}</em></TaskText>
-                <TaskText><FontAwesomeIcon icon={faUser}/>{task.responsavel}</TaskText>
-                <TaskText><FontAwesomeIcon icon={faClock}/>{task.tempoDeExecucao}h / {task.tempoEstimado}h</TaskText>
+                <TaskText><StyledIcon icon={faUser}/>{task.responsavel}</TaskText>
+                <TaskText><StyledIcon icon={faClock}/>{task.tempoDeExecucao}h / {task.tempoEstimado}h</TaskText>
               </CardContent>
               
               <TaskActions>
+                <ActionButton onClick={() => handleViewTask(task)}>
+                  <FontAwesomeIcon icon={faEye} />
+                </ActionButton>
                 {(userRole === 'admin' || task.uid === user.uid) && (
                   <ActionButton onClick={() => handleEditTask(task)}>
                     <FontAwesomeIcon icon={faPenToSquare} />
                   </ActionButton>
                 )}
                 {userRole === 'admin' && (
-                    <ActionButton onClick={() => handleDeleteTask(task.id)}>
+                    <ActionButton onClick={() => handleDeleteTaskConfirm(task.id)}>
                       <FontAwesomeIcon icon={faTrash} />
                     </ActionButton>
                 )}
@@ -109,6 +139,17 @@ const TaskList = () => {
         <TaskForm
           taskToEdit={taskToEdit}
           onFormSubmit={handleFormSubmit}
+        />
+      </CustomModal>
+      <CustomModal isOpen={isViewModalOpen} onRequestClose={() => setIsViewModalOpen(false)}>
+        <TaskView
+          taskToView={taskToView}
+        />
+      </CustomModal>
+      <CustomModal isOpen={isDeleteModalOpen} onRequestClose={handleCancelDelete}>
+        <ConfirmTaskDelete
+          onConfirm={handleDelete}
+          onCancel={handleCancelDelete}
         />
       </CustomModal>
     </TaskListContainer>

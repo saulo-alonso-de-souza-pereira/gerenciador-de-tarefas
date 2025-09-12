@@ -1,19 +1,24 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 
 export const TaskListContainer = styled.div`
-  /* Mantenha o estilo do container principal */
   background-color: #f8f9fa;
   padding: 1.5rem;
   border-radius: 8px;
   width: 100%;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 2rem auto;
+`;
+
+export const StyledIcon = styled(FontAwesomeIcon)`
+  color: #750543;
 `;
 
 export const TaskGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-rows: 240px;
+  gap: 0.75rem;
   padding: 1rem 0;
 `;
 
@@ -34,23 +39,23 @@ export const CardGradientBorder = styled.div`
   top: 0;
   left: 0;
   height: 100%;
-  width: 8px; /* Largura do gradiente lateral */
-  background-image: linear-gradient(to bottom, #d0d000, #e30693);
+  width: 8px;
+  background-image: linear-gradient(to bottom, #750543, #e30693);
 `;
 
 export const CardContent = styled.div`
-  padding-left: 1rem; /* Espaço para o gradiente lateral */
+  padding-left: 1rem; 
 `;
 
-export const TaskTitle = styled.h4`
-  font-size: 1.25rem;
+export const TaskTitle = styled.p`
+  font-size: 1rem;
   color: #333;
   margin: 0 0 0.5rem 0;
   font-weight: 700;
 `;
 
 export const TaskText = styled.p`
-  color: #666;
+  color: #333;
   margin: 0;
   font-size: 0.9rem;
   display: flex;
@@ -58,14 +63,14 @@ export const TaskText = styled.p`
   gap: 0.5rem;
 
   em {
-    font-style: italic !important;
+    font-style: italic;
     color:#e30693;
   }
 `;
 
 export const TaskActions = styled.div`
   display: flex;
-  justify-content: flex-end; /* Alinha os botões à direita */
+  justify-content: flex-end;
   gap: 0.5rem;
   margin-top: 1rem;
 `;
@@ -79,6 +84,6 @@ export const ActionButton = styled.button`
   transition: color 0.2s ease;
 
   &:hover {
-    color: #000;
+    color: #333;
   }
 `;
